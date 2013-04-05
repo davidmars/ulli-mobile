@@ -1,3 +1,14 @@
 .ulli-mobile{
     font-family: arial;
 }
+
+.ulli-mobile li ul{
+    display:none;
+}
+
+.ulli-mobile .active{
+    display:block;
+}
+
+
+
