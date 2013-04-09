@@ -1,6 +1,4 @@
-.ulli-mobile{
-    font-family: arial;
-}
+/* Display */
 
 .ulli-mobile li ul{
     display:none;
@@ -10,5 +8,65 @@
     display:block;
 }
 
+.ulli-mobile.erase, .ulli-mobile .erase{
+    display:none;
+}
 
 
+/* Design */
+
+
+.ulli-mobile{
+    font-family: arial;
+    text-align: center;
+
+    background-color:#666;
+    color:#fafafa;
+}
+
+.ulli-mobile a {
+    text-decoration: none;
+    color:#fafafa;
+    font-weight: bold;
+    cursor:pointer;
+}
+
+.ulli-mobile ul, .ulli-mobile li{
+    text-align: left;
+    padding:0;
+
+}
+
+.ulli-mobile ul{
+    list-style: none;
+}
+
+.ulli-mobile li{
+    list-style: none;
+    padding: 10px 0;
+    border-top: 1px solid #eee;
+    width: 100%;
+}
+.ulli-mobile li:hover{
+    background-color: #aaa;
+}
+
+.ulli-mobile .page{
+    background-color:#666;
+    color:#fafafa;
+    width: 100%;
+}
+
+.ulli-mobile ul.active{
+    background-color: #999;
+}
+
+
+
+.ulli-mobile .more, .ulli-mobile .less, .ulli-mobile .arrow{
+    float: right;
+    padding-right: 30px;
+    font-size: 20px;
+    font-weight: normal;
+    height: 20px;
+}
