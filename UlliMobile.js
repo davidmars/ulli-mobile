@@ -123,10 +123,9 @@ var UlliMobile = {
         UlliMobile.CheckMultiple(parentul);
 
         // create back
-        var back = $("<div style='border-left: 10px solid #000;'>&nbsp;</div>");
+        var back = $("<div class='back'> Back</div>");
         back.data("parentul", parentul);
         back.data("ecran", ecran);
-
         back.on('click', function (e) {
 
             var parentul = $(this).data("parentul");

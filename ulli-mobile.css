@@ -62,6 +62,7 @@
 }
 
 
+/* ----- icons */
 
 .ulli-mobile .more, .ulli-mobile .less, .ulli-mobile .arrow{
     float: right;
@@ -69,4 +70,8 @@
     font-size: 20px;
     font-weight: normal;
     height: 20px;
+}
+
+.ulli-mobile .back{
+    padding: 4px;
 }
