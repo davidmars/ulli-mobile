@@ -3,13 +3,13 @@ var UlliMobile = {
     container:$("<div class='page'></div>"),
 
     generateContainer:function () {
-        UlliMobile.container.css("position", "absolute");
-    },
-
-    generateScreens:function () {
         $(".ulli-mobile").append(UlliMobile.container);
-    },
 
+        // background
+        /* var bg = $("<div class='bg'></div>");
+         $(".ulli-mobile").append(bg)*/
+        ;
+    },
 
     ///
     DisplayUl:function (el, li, way) {
@@ -21,32 +21,32 @@ var UlliMobile = {
 
             // head li
             var headli = $(firstli[i]).children().first();
+
             // first ul in head li
             var firstul = $(UlliMobile.setFirstUl(headli));
             headli.data('firstul', firstul);
 
-
             // create icons for each headli (just one time only)
             if (firstul.length != 0) {
-                if (headli.find('.more').length == 0) {
-                    var more = $("<div class='more'>+</div>");
-                    headli.append(more);
-                    var less = $("<div class='less'>-</div>");
-                    headli.append(less);
+                if (headli.find('.plus').length == 0) {
+                    var plus = $("<div class='plus'>+</div>");
+                    headli.append(plus);
+                    var minus = $("<div class='minus'>-</div>");
+                    headli.append(minus);
                     var arrow = $("<div class='arrow'>></div>");
                     headli.append(arrow);
 
                     // hide icons according to the way to open the first ul
                     if (way == "accordion") {
                         arrow.addClass("erase");
-                        more.addClass("erase");
+                        minus.addClass("erase");
                     }
                     if (way == "page") {
-                        more.addClass("erase");
-                        less.addClass("erase");
+                        plus.addClass("erase");
+                        minus.addClass("erase");
                     }
                 }
-                headli.css("cursor","pointer");
+                headli.css("cursor", "pointer");
             }
 
 
@@ -57,30 +57,39 @@ var UlliMobile = {
 
                 // if there is ul
                 if (firstul.length != 0) {
-
                     if (way == "accordion") {
+
+                        //get array ul opened until now
+                        var headliactive = $(el.parent().parent().find(".in"));
+
                         // open/close ul
-                        if (!el.hasClass("in")) {
-                            el.addClass("in");
-                            firstul.addClass("active");
+                        el.toggleClass("in")
+                        firstul.toggleClass("active");
 
-                            // hide/show icons
-                            el.find('.more').removeClass("erase");
-                            el.find('.less').addClass("erase");
+                        // css height ul
+                        var allli = $(firstul.find("> li"));
+                        firstul.css('height', allli.length * 40 + "px");
 
-                        } else {
-                            el.removeClass("in");
-                            firstul.removeClass("active");
+                        // hide/show icons
+                        el.find('.plus').toggleClass('erase');
+                        el.find('.minus').toggleClass("erase");
 
-                            // hide/show icons
-                            el.find('.more').addClass("erase");
-                            el.find('.less').removeClass("erase");
-
+                        // close other ul
+                        for (var i = 0; i < headliactive.length; i++) {
+                            if (headliactive[i] != el) {
+                                //remove class, close ul
+                                $(headliactive[i]).removeClass("in");
+                                $($(headliactive[i]).parent().find('ul')).removeClass("active");
+                                $($(headliactive[i]).parent().find('ul')).css('height', 0);
+                                // hide icons
+                                $(headliactive[i]).find('.plus').removeClass('erase');
+                                $(headliactive[i]).find('.minus').addClass("erase")
+                            }
                         }
+
                     } else if (way == "page") {
 
                         UlliMobile.ClonePage(el, firstul);
-
                     }
 
                     //don't go to the link, a href inactive
@@ -101,44 +110,54 @@ var UlliMobile = {
     ClonePage:function (el, ul) {
         // create ul without the nodes inside
         var ecran = ul.clone();
-        //ecran.find("li ul").remove();
+        ///ecran.find("li ul").remove(;
+        ecran.toggleClass("menu-show");
 
-        // create title
+        // title : create
         var elparent = $(el.parent().children().first());
         var title = elparent.clone();
-        title.find('.arrow').addClass("erase");
+        $(title).removeClass("btn-li")
         ecran.prepend(title);
 
+        // title : css / class
+        title.find('.arrow').addClass("erase");
+        title.addClass("title");
         // if there isn't a on title then cursor:inherit
-        if(title.find('a').length == 0){
-            title.css("cursor","inherit");
+        if (title.find('a').length == 0) {
+            title.css("cursor", "inherit");
         }
 
-        // find ul parent
-        var parentul = $(el.closest("ul"));
+        // parentful : hide
+        var parentul = $(el.closest("ul"))
+        parentul.toggleClass("menu-left");
+        parentul.removeClass("menu-show");
 
-        // hide parentful
-        parentul.addClass("erase");
 
+        //
         UlliMobile.CheckMultiple(parentul);
 
-        // create back
-        var back = $("<div class='back'> Back</div>");
+        //
+
+        // back : create
+        var back = $("<span class='back'><span class='back_arrow'>&nbsp;</span><span class='back_text'>Back</span><span class='back_rounded'>&nbsp;</span></span>");
         back.data("parentul", parentul);
         back.data("ecran", ecran);
         back.on('click', function (e) {
 
             var parentul = $(this).data("parentul");
-            parentul.removeClass("erase");
+            parentul.removeClass("menu-left");
+            parentul.addClass("menu-show");
 
             var ecran = $(this).data("ecran");
-            ecran.addClass("erase");
+            ecran.removeClass("menu-show");
+            ecran.addClass("menu-right");
+            ecran.remove();
 
             UlliMobile.CheckMultiple(parentul);
         })
         ecran.prepend(back);
 
-        UlliMobile.container.append(ecran);
+        $(UlliMobile.container).prepend(ecran);
 
         // change the setup for display the next ul
         if ($("body").find(".ulli-accordion-page").length == 1) {
@@ -154,42 +173,58 @@ var UlliMobile = {
         // if we are on ulli-mobile multiple, we have to hide the first ul
         if (parentul.hasClass("active") == true) {
             var firstul = $(".ulli-mobile > ul");
-            if (!firstul.hasClass("erase")) {
-                firstul.addClass("erase");
+
+
+            if (!firstul.hasClass("menu-erase")) {
+                // togg    leirstuladddClass("menu-erase")
             } else {
-                firstul.removeClass("erase");
+                firstul.removeClass("menu-erase");
             }
         }
+    },
+
+    DesignUlli:function () {
+
+        //add a class on headli
+        var everyli = $(".ulli-mobile").find("li");
+        for (var i = 0; i < everyli.length; i++) {
+            var el = $(everyli[i]).children().first();
+            $(el).addClass("btn-li");
+        }
+
+    },
+    init:function () {
+        if (UlliMobile.yetInit) {
+            return;
+        }
+        UlliMobile.yetInit = true;
+        UlliMobile.generateContainer();
+        UlliMobile.DesignUlli();
+
+        if ($("body").find(".ulli-accordion").length == 1) {
+            UlliMobile.DisplayUl(".ulli-mobile", "li", "accordion");
+        } else if ($("body").find(".ulli-page").length == 1) {
+            UlliMobile.DisplayUl(".ulli-mobile", "li", "page");
+
+        } else if ($("body").find(".ulli-accordion-page").length == 1) {
+            UlliMobile.DisplayUl(".ulli-mobile", "> ul > li", "accordion");
+            UlliMobile.DisplayUl(".ulli-mobile", "li ul li", "page");
+        } else if ($("body").find(".ulli-page-accordion").length == 1) {
+            UlliMobile.DisplayUl(".ulli-mobile", "> ul > li", "page");
+            UlliMobile.DisplayUl(".ulli-mobile", "li ul li", "accordion");
+        } else {
+            UlliMobile.DisplayUl(".ulli-mobile", "li", "accordion");
+        }
     }
-
-
-
 }
 
-
-UlliMobile.generateContainer();
-UlliMobile.generateScreens();
 //
 
+UlliMobile.init();
 
-if ($("body").find(".ulli-accordion").length == 1) {
-    UlliMobile.DisplayUl(".ulli-mobile", "li", "accordion");
+$("body").on('click', ".mobile-menu-btn", function () {
 
-} else if ($("body").find(".ulli-page").length == 1) {
-    UlliMobile.DisplayUl(".ulli-mobile", "li", "page");
-
-} else if ($("body").find(".ulli-accordion-page").length == 1) {
-    UlliMobile.DisplayUl(".ulli-mobile", "> ul > li", "accordion");
-    UlliMobile.DisplayUl(".ulli-mobile", "li ul li", "page");
-} else if ($("body").find(".ulli-page-accordion").length == 1) {
-    UlliMobile.DisplayUl(".ulli-mobile", "> ul > li", "page");
-    UlliMobile.DisplayUl(".ulli-mobile", "li ul li", "accordion");
-} else {
-    UlliMobile.DisplayUl(".ulli-mobile", "li", "accordion");
-}
-
-
-
-
-
+    $("body").find(".ulli-mobile").toggleClass("erase");
+    $("body").find(".icon-piaget-mobile-menu").toggleClass("active");
+})
 

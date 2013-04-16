@@ -1,70 +1,124 @@
-/* Display */
+/* Display ---------------------------------------- */
+
+/* - accordion*/
 
 .ulli-mobile li ul{
-    display:none;
+    height: 0;
+    -webkit-transition: height 0.5s ease;
+    -moz-transition: height 0.5s ease;
+    -o-transition: height 0.5s ease;
+    -ms-transition: height 0.5s ease;
+    transition: height 0.5s ease;
+    overflow:hidden;
 }
 
-.ulli-mobile .active{
-    display:block;
+.ulli-mobile li ul.active {
+    /*js set height in px*/
 }
 
-.ulli-mobile.erase, .ulli-mobile .erase{
-    display:none;
+/* - page */
+
+.ulli-mobile .menu-left{
+    position: absolute;
+    /*js set position left in px*/
+    left: -1840px;
+    width: 100%;
+
+    /* left: - width; */
 }
 
+.ulli-mobile .menu-show{
+    position: absolute;
+    /*js set position right in px*/
+    left: 79px;
+    width: 100%;
 
-/* Design */
-
-
-.ulli-mobile{
-    font-family: arial;
-    text-align: center;
-
-    background-color:#666;
-    color:#fafafa;
+    /* 0 */
 }
 
-.ulli-mobile a {
-    text-decoration: none;
-    color:#fafafa;
-    font-weight: bold;
-    cursor:pointer;
-}
+.ulli-mobile .menu-right{
+    /* right: - width; */
 
-.ulli-mobile ul, .ulli-mobile li{
-    text-align: left;
-    padding:0;
-
-}
-
-.ulli-mobile ul{
-    list-style: none;
-}
-
-.ulli-mobile li{
-    list-style: none;
-    padding: 10px 0;
-    border-top: 1px solid #eee;
+    position: absolute;
+    /*js set position left in px*/
+    right: -1840px;
     width: 100%;
 }
-.ulli-mobile li:hover{
-    background-color: #aaa;
+
+/* Design ---------------------------------------- */
+
+.ulli-mobile{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+
+.ulli-mobile, .ulli-mobile *{
+    font-family: arial;
+    padding:0;
+    margin: 0;
+    text-decoration: none;
+    color:#fafafa;
 }
 
 .ulli-mobile .page{
-    background-color:#666;
-    color:#fafafa;
+    position: absolute;
     width: 100%;
 }
 
-.ulli-mobile ul.active{
-    background-color: #999;
+.ulli-mobile .erase{
+    display:none;
 }
 
 
-/* ----- icons */
+/* - bg color menu */
+.ulli-mobile li , .ulli-mobile ul{
+    background-color: #666;
+}
 
-.ulli-mobile .more, .ulli-mobile .less, .ulli-mobile .arrow{
+/* - li */
+
+.ulli-mobile li{
+    padding:0;
+    margin: 0;
+    list-style: none;
+    border-top: 1px solid #eee;
+}
+
+
+.ulli-mobile ul.active li{
+    background-color: #999;
+
+}
+
+.ulli-mobile .btn-li{
+    display: block;
+    padding-left: 40px;
+    height: 40px;
+    line-height: 40px;
+}
+
+/* - page */
+
+.ulli-mobile, .ulli-mobile .page > ul{
+    width: 100%;
+}
+
+/* - background*/
+
+.ulli-mobile .bg{
+    background-color: #000;
+    opacity: 0.8;
+    height: 100%;
+}
+
+
+/* icons ---------------------------------------- */
+
+/* - arrow, minus, plus */
+
+.ulli-mobile .plus, .ulli-mobile .minus, .ulli-mobile .arrow{
     float: right;
     padding-right: 30px;
     font-size: 20px;
@@ -72,6 +126,50 @@
     height: 20px;
 }
 
+/* - back */
+
 .ulli-mobile .back{
-    padding: 4px;
+    margin-left: 10px;
+    cursor: pointer;
+    line-height: 50px;
 }
+
+.ulli-mobile .back_text{
+    padding: 8px;
+    background-color: #000;
+    width: 50px;
+    font-size: 10px;
+    text-transform: uppercase;
+    border-bottom: 1px solid #000;
+
+}
+.ulli-mobile .back_arrow{
+    width: 0;
+    height: 0;
+    border: 15px solid transparent;
+    border-right-color: #000;
+    font-size: 0;
+    line-height: 0;
+    position: relative;
+    bottom: 3px;
+}
+
+.ulli-mobile .back_rounded{
+    border-right: 15px solid #000;
+    position: relative;
+    bottom: 2px;
+    left: -4px;
+    font-size: 10px;
+    font-size: 1px;
+    height: 34px;
+    padding: 14px 0;
+    border-radius: 10px;
+    left: -9px;
+}
+
+.ulli-mobile .title{
+    margin-left: 30px;
+    position: relative;
+    top: 2px;
+}
+
